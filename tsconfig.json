@@ -5,6 +5,7 @@
     "lib": ["ESNext"],
     "module": "NodeNext",
     "skipLibCheck": true,
+    "baseUrl": "./src",
 
     /* Bundler mode */
     "moduleResolution": "NodeNext",
@@ -19,4 +20,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
+  "include": ["src"]
 }
