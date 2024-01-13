@@ -19,9 +19,10 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'import/no-extraneous-dependencies': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     'sort-imports': ['error', {ignoreCase: true, ignoreDeclarationSort: true}],
+    'import/prefer-default-export': 'off',
+    'import/no-extraneous-dependencies': 'off',
     'import/extensions': ["error", "never"],
     'import/order': [
       'error',
@@ -50,6 +51,10 @@ module.exports = {
     ],
   },
   settings: {
-    'import/resolver': 'node',
+    'import/resolver': {
+      'node': {
+        'extensions': ['.ts']
+      }
+    }
   },
 };
