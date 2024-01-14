@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 import { StatusCode } from './src/types/enums';
 import { TourSimple } from './src/types/types';
@@ -15,7 +15,7 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf-8'),
 ) as TourSimple[];
 
-app.get('/api/v1/tours', (_req, res) => {
+const getAllTours = (_req: Request, res: Response) => {
   res.status(StatusCode.SUCCESS).json({
     status: 'success',
     results: tours.length,
@@ -23,9 +23,9 @@ app.get('/api/v1/tours', (_req, res) => {
       tours,
     },
   });
-});
+};
 
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTour = (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const tour = tours.find((tourEl) => tourEl.id === id);
 
@@ -45,9 +45,9 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tour,
     },
   });
-});
+};
 
-app.post('/api/v1/tours', (req, res) => {
+const addTour = (req: Request, res: Response) => {
   const lastTourId = tours.at(-1)?.id;
   const newId = lastTourId ? lastTourId + 1 : 0;
   const newTour = { id: newId, ...req.body };
@@ -69,9 +69,9 @@ app.post('/api/v1/tours', (req, res) => {
       });
     },
   );
-});
+};
 
-app.patch('/api/v1/tours/:id', (req, res) => {
+const updateTour = (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const toUpdateTour = tours.find((tourEl) => tourEl.id === id);
 
@@ -103,13 +103,13 @@ app.patch('/api/v1/tours/:id', (req, res) => {
       });
     },
   );
-});
+};
 
-app.delete('/api/v1/tours/:id', (req, res) => {
+const deleteTour = (req: Request, res: Response) => {
   const id = Number(req.params.id);
-  const deleteTour = tours.find((tourEl) => tourEl.id === id);
+  const tour = tours.find((tourEl) => tourEl.id === id);
 
-  if (!deleteTour) {
+  if (!tour) {
     res.status(StatusCode.NOT_FOUND).json({
       status: 'fail',
       error: {
@@ -131,7 +131,13 @@ app.delete('/api/v1/tours/:id', (req, res) => {
       });
     },
   );
-});
+};
+
+app.get('/api/v1/tours', getAllTours);
+app.get('/api/v1/tours/:id', getTour);
+app.post('/api/v1/tours', addTour);
+app.patch('/api/v1/tours/:id', updateTour);
+app.delete('/api/v1/tours/:id', deleteTour);
 
 app.listen(process.env.PORT, () => {
   console.log(`App running on port ${process.env.PORT}...`);
