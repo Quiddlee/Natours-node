@@ -153,6 +153,41 @@ const deleteTour = (req: Request, res: Response) => {
   );
 };
 
+const getAllUsers = (_req: Request, res: Response) => {
+  res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
+    status: 'error',
+    message: 'The user route is not yet implemented! 🙂',
+  });
+};
+
+const getUser = (_req: Request, res: Response) => {
+  res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
+    status: 'error',
+    message: 'The user route is not yet implemented! 🙂',
+  });
+};
+
+const createUser = (_req: Request, res: Response) => {
+  res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
+    status: 'error',
+    message: 'The user route is not yet implemented! 🙂',
+  });
+};
+
+const updateUser = (_req: Request, res: Response) => {
+  res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
+    status: 'error',
+    message: 'The user route is not yet implemented! 🙂',
+  });
+};
+
+const deleteUser = (_req: Request, res: Response) => {
+  res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
+    status: 'error',
+    message: 'The user route is not yet implemented! 🙂',
+  });
+};
+
 // 3. Routes
 
 // Optional way 🫡
@@ -171,6 +206,13 @@ app
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour);
+
+app.route('/api/v1/users').get(getAllUsers).post(createUser);
+app
+  .route('/api/v1/users/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 // 4. Start server
 
