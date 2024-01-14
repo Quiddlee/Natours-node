@@ -47,7 +47,7 @@ const getTour = (req: Request, res: Response) => {
   });
 };
 
-const addTour = (req: Request, res: Response) => {
+const createTour = (req: Request, res: Response) => {
   const lastTourId = tours.at(-1)?.id;
   const newId = lastTourId ? lastTourId + 1 : 0;
   const newTour = { id: newId, ...req.body };
@@ -133,11 +133,22 @@ const deleteTour = (req: Request, res: Response) => {
   );
 };
 
-app.get('/api/v1/tours', getAllTours);
-app.get('/api/v1/tours/:id', getTour);
-app.post('/api/v1/tours', addTour);
-app.patch('/api/v1/tours/:id', updateTour);
-app.delete('/api/v1/tours/:id', deleteTour);
+// Optional way 🫡
+
+// app.get('/api/v1/tours', getAllTours);
+// app.get('/api/v1/tours/:id', getTour);
+// app.post('/api/v1/tours', createTour);
+// app.patch('/api/v1/tours/:id', updateTour);
+// app.delete('/api/v1/tours/:id', deleteTour);
+
+// Preferred way 👍
+
+app.route('/api/1v/tours').get(getAllTours).post(createTour);
+app
+  .route('/api/v1/tours/:id')
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 app.listen(process.env.PORT, () => {
   console.log(`App running on port ${process.env.PORT}...`);
