@@ -1,4 +1,4 @@
-export type TourSimple = Readonly<{
+export type TourSimple = {
   id: number;
   name: string;
   duration: number;
@@ -12,4 +12,4 @@ export type TourSimple = Readonly<{
   imageCover: string;
   images: string[];
   startDates: string[];
-}>;
+};
