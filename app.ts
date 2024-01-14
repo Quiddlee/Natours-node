@@ -2,12 +2,14 @@ import fs from 'fs';
 
 import express from 'express';
 
-import { StatusCode } from './types/enums';
-import { TourSimple } from './types/types';
+import { TourSimple } from './src/types/types';
+import { StatusCode } from './src/types/enums';
 
 import 'dotenv/config';
 
 const app = express();
+
+app.use(express.json());
 
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf-8'),
@@ -21,6 +23,10 @@ app.get('/api/v1/tours', (_req, res) => {
       tours,
     },
   });
+});
+
+app.post('/api/v1/tours', (req, _res) => {
+  console.log(req.body);
 });
 
 app.listen(process.env.PORT, () => {
