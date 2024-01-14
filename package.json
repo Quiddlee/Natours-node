@@ -2,16 +2,16 @@
   "name": "natours-node",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "app.ts",
   "scripts": {
     "dev": "nodemon app.ts",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint --fix --ext ts,js,tsx,js",
-    "format": "prettier \"./**/*.{ts,tsx,css}\"",
-    "format:fix": "prettier --write \"./**/*.{ts,tsx,css}\"",
+    "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint --fix --ext ts",
+    "format": "prettier \"./**/*.{ts,css}\"",
+    "format:fix": "prettier --write \"./**/*.{ts,css}\"",
     "type-check": "tsc --noEmit",
     "prepare": "husky install",
-    "precommit": "npx lint-staged && npm run type-check"
+    "precommit": "pnpm lint-staged && pnpm type-check"
   },
   "keywords": [],
   "author": "",
