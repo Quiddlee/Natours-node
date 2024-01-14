@@ -105,6 +105,34 @@ app.patch('/api/v1/tours/:id', (req, res) => {
   );
 });
 
+app.delete('/api/v1/tours/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const deleteTour = tours.find((tourEl) => tourEl.id === id);
+
+  if (!deleteTour) {
+    res.status(StatusCode.NOT_FOUND).json({
+      status: 'fail',
+      error: {
+        message: 'Invalid ID',
+      },
+    });
+    return;
+  }
+
+  const newTours = tours.filter((tourData) => tourData.id !== id);
+
+  fs.writeFile(
+    `${__dirname}/dev-data/data/tours-simple.json`,
+    JSON.stringify(newTours, null, 2),
+    () => {
+      res.status(StatusCode.NO_CONTENT).json({
+        status: 'success',
+        data: null,
+      });
+    },
+  );
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`App running on port ${process.env.PORT}...`);
 });

@@ -211,17 +211,5 @@
     "name": "Test tour",
     "duration": 10,
     "difficulty": "easy"
-  },
-  {
-    "id": 11,
-    "name": "Test tour 2",
-    "duration": 20,
-    "difficulty": "easy"
-  },
-  {
-    "id": 10,
-    "name": "Name changed 2",
-    "duration": 500,
-    "difficulty": "easy"
   }
 ]
