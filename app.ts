@@ -9,15 +9,29 @@ import 'dotenv/config';
 
 const app = express();
 
-app.use(express.json());
+app
+  .use(express.json())
+  .use((_req, _res, next) => {
+    console.log('Hello from the middleware 👋');
+    next();
+  })
+  .use((req, _res, next) => {
+    Object.defineProperty(req, 'requestTime', {
+      value: new Date().toISOString(),
+    });
+    next();
+  });
 
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf-8'),
 ) as TourSimple[];
 
-const getAllTours = (_req: Request, res: Response) => {
+const getAllTours = (req: Request, res: Response) => {
+  const r = req as Request & { requestTime: string };
+
   res.status(StatusCode.SUCCESS).json({
     status: 'success',
+    requestedAt: r.requestTime,
     results: tours.length,
     data: {
       tours,
@@ -143,7 +157,7 @@ const deleteTour = (req: Request, res: Response) => {
 
 // Preferred way 👍
 
-app.route('/api/1v/tours').get(getAllTours).post(createTour);
+app.route('/api/v1/tours').get(getAllTours).post(createTour);
 app
   .route('/api/v1/tours/:id')
   .get(getTour)
