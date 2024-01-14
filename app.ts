@@ -1,6 +1,7 @@
 import fs from 'fs';
 
 import express, { Request, Response } from 'express';
+import morgan from 'morgan';
 
 import { StatusCode } from './src/types/enums';
 import { TourSimple } from './src/types/types';
@@ -9,7 +10,10 @@ import 'dotenv/config';
 
 const app = express();
 
+// 1. Middlewares
+
 app
+  .use(morgan('dev'))
   .use(express.json())
   .use((_req, _res, next) => {
     console.log('Hello from the middleware 👋');
@@ -25,6 +29,8 @@ app
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf-8'),
 ) as TourSimple[];
+
+// 2. Route handlers
 
 const getAllTours = (req: Request, res: Response) => {
   const r = req as Request & { requestTime: string };
@@ -147,6 +153,8 @@ const deleteTour = (req: Request, res: Response) => {
   );
 };
 
+// 3. Routes
+
 // Optional way 🫡
 
 // app.get('/api/v1/tours', getAllTours);
@@ -163,6 +171,8 @@ app
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour);
+
+// 4. Start server
 
 app.listen(process.env.PORT, () => {
   console.log(`App running on port ${process.env.PORT}...`);
