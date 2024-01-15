@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { StatusCode } from '../src/types/enums';
 import { TourSimple } from '../src/types/types';
@@ -8,6 +8,25 @@ import { TourSimple } from '../src/types/types';
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`, 'utf-8'),
 ) as TourSimple[];
+
+export const checkId = (
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+  val: string,
+) => {
+  const id = Number(val);
+  const tour = tours.find((tourData) => tourData.id === id);
+
+  if (!tour) {
+    res.status(StatusCode.NOT_FOUND).json({
+      status: 'fail',
+      message: 'Invalid iD',
+    });
+    return;
+  }
+  next();
+};
 
 export const getAllTours = (req: Request, res: Response) => {
   const r = req as Request & { requestTime: string };
@@ -24,17 +43,7 @@ export const getAllTours = (req: Request, res: Response) => {
 
 export const getTour = (req: Request, res: Response) => {
   const id = Number(req.params.id);
-  const tour = tours.find((tourEl) => tourEl.id === id);
-
-  if (!tour) {
-    res.status(StatusCode.NOT_FOUND).json({
-      status: 'fail',
-      error: {
-        message: 'Invalid ID',
-      },
-    });
-    return;
-  }
+  const tour = tours.find((tourEl) => tourEl.id === id)!;
 
   res.status(StatusCode.SUCCESS).json({
     status: 'success',
@@ -70,17 +79,7 @@ export const createTour = (req: Request, res: Response) => {
 
 export const updateTour = (req: Request, res: Response) => {
   const id = Number(req.params.id);
-  const toUpdateTour = tours.find((tourEl) => tourEl.id === id);
-
-  if (!toUpdateTour) {
-    res.status(StatusCode.NOT_FOUND).json({
-      status: 'fail',
-      error: {
-        message: 'Invalid ID',
-      },
-    });
-    return;
-  }
+  const toUpdateTour = tours.find((tourEl) => tourEl.id === id)!;
 
   const updateData = req.body;
   const updatedTour = { ...toUpdateTour, ...updateData };
@@ -104,18 +103,6 @@ export const updateTour = (req: Request, res: Response) => {
 
 export const deleteTour = (req: Request, res: Response) => {
   const id = Number(req.params.id);
-  const tour = tours.find((tourEl) => tourEl.id === id);
-
-  if (!tour) {
-    res.status(StatusCode.NOT_FOUND).json({
-      status: 'fail',
-      error: {
-        message: 'Invalid ID',
-      },
-    });
-    return;
-  }
-
   const newTours = tours.filter((tourData) => tourData.id !== id);
 
   fs.writeFile(
