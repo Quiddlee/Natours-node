@@ -8,8 +8,11 @@ import 'dotenv/config';
 
 const app = express();
 
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
 app
-  .use(morgan('dev'))
   .use(express.json())
   .use((_req, _res, next) => {
     console.log('Hello from the middleware 👋');
