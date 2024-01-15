@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.ts",
   "scripts": {
-    "dev": "nodemon app.ts",
+    "dev": "nodemon server.ts",
     "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint --fix --ext ts",
     "format": "prettier \"./**/*.{ts,css}\"",
