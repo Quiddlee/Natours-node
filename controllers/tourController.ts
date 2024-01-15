@@ -21,10 +21,25 @@ export const checkId = (
   if (!tour) {
     res.status(StatusCode.NOT_FOUND).json({
       status: 'fail',
-      message: 'Invalid iD',
+      message: 'Invalid ID',
     });
     return;
   }
+  next();
+};
+
+export const checkBody = (req: Request, res: Response, next: NextFunction) => {
+  const { body } = req;
+  const isValidBody = 'name' in body && 'price' in body;
+
+  if (!isValidBody) {
+    res.status(StatusCode.BAD_REQUEST).json({
+      status: 'fail',
+      message: 'The data is missing required name or price field',
+    });
+    return;
+  }
+
   next();
 };
 
