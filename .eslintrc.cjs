@@ -7,6 +7,7 @@ module.exports = {
     'airbnb/hooks',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/recommended',
+    'plugin:node/recommended',
     'prettier',
   ],
   ignorePatterns: ['.eslintrc.cjs', 'prettier.config.js', 'node_modules'],
