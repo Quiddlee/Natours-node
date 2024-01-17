@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: { browser: true, es2020: true, es6: true },
   extends: [
     'airbnb',
     'airbnb-typescript',
@@ -21,10 +21,21 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/no-var-requires': 'off',
-    'sort-imports': ['error', {ignoreCase: true, ignoreDeclarationSort: true}],
+    'node/no-unpublished-import': 'off',
+    'node/no-missing-import': 'off',
+    'node/no-unsupported-features/es-syntax': [
+      'error',
+      {
+        ignores: ['modules'],
+      },
+    ],
+    'sort-imports': [
+      'error',
+      { ignoreCase: true, ignoreDeclarationSort: true },
+    ],
     'import/prefer-default-export': 'off',
     'import/no-extraneous-dependencies': 'off',
-    'import/extensions': ["error", "never"],
+    'import/extensions': ['error', 'never'],
     'import/order': [
       'error',
       {
@@ -53,9 +64,9 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      'node': {
-        'extensions': ['.ts']
-      }
-    }
+      node: {
+        extensions: ['.ts'],
+      },
+    },
   },
 };
