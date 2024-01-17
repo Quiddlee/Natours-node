@@ -1,5 +1,5 @@
 module.exports = {
-  './**/*.{ts}': [
+  './**/*.ts': [
     'npm run lint:fix',
     'npm run format:fix',
   ],
