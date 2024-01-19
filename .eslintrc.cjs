@@ -10,7 +10,7 @@ module.exports = {
     'plugin:node/recommended',
     'prettier',
   ],
-  ignorePatterns: ['.eslintrc.cjs', 'prettier.config.js', 'node_modules'],
+  ignorePatterns: ['.eslintrc.cjs', 'prettier.config.js', 'node_modules', 'environment.d.ts'],
   plugins: ['import', 'prettier', '@typescript-eslint'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
