@@ -24,7 +24,7 @@ export const getAllTours = async (_req: Request, res: Response) => {
 
 export const getTour = async (req: Request, res: Response) => {
   try {
-    const tour = await Tour.findById(Number(req.params.id));
+    const tour = await Tour.findById(req.params.id);
 
     res.status(StatusCode.SUCCESS).json({
       status: 'success',
@@ -58,6 +58,25 @@ export const createTour = async (req: Request, res: Response) => {
   }
 };
 
-export const updateTour = (/* req: Request, res: Response */) => {};
+export const updateTour = async (req: Request, res: Response) => {
+  try {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(StatusCode.CREATED).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
+  } catch (e) {
+    res.status(StatusCode.BAD_REQUEST).json({
+      status: 'fail',
+      message: e,
+    });
+  }
+};
 
 export const deleteTour = (/* req: Request, res: Response */) => {};
