@@ -3,17 +3,23 @@ import { Request, Response } from 'express';
 import Tour from '../models/tourModel';
 import { StatusCode } from '../src/types/enums';
 
-export const getAllTours = (req: Request, res: Response) => {
-  const r = req as Request & { requestTime: string };
+export const getAllTours = async (_req: Request, res: Response) => {
+  try {
+    const tours = await Tour.find();
 
-  res.status(StatusCode.SUCCESS).json({
-    status: 'success',
-    requestedAt: r.requestTime,
-    // results: tours.length,
-    // data: {
-    //   tours,
-    // },
-  });
+    res.status(StatusCode.SUCCESS).json({
+      status: 'success',
+      results: tours.length,
+      data: {
+        tours,
+      },
+    });
+  } catch (e) {
+    res.status(StatusCode.NOT_FOUND).json({
+      status: 'fail',
+      message: e,
+    });
+  }
 };
 
 export const getTour = (_req: Request, res: Response) => {
