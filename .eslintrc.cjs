@@ -10,7 +10,12 @@ module.exports = {
     'plugin:node/recommended',
     'prettier',
   ],
-  ignorePatterns: ['.eslintrc.cjs', 'prettier.config.js', 'node_modules', 'environment.d.ts'],
+  ignorePatterns: [
+    '.eslintrc.cjs',
+    'prettier.config.js',
+    'node_modules',
+    'environment.d.ts',
+  ],
   plugins: ['import', 'prettier', '@typescript-eslint'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -20,6 +25,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'no-process-exit': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     'node/no-unpublished-import': 'off',
     'node/no-missing-import': 'off',
