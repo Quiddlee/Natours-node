@@ -4,8 +4,6 @@ import morgan from 'morgan';
 import tourRouter from './routes/tourRoutes';
 import userRouter from './routes/userRoutes';
 
-import 'dotenv/config';
-
 const app = express();
 
 if (process.env.NODE_ENV === 'development') {
