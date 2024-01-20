@@ -79,4 +79,18 @@ export const updateTour = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteTour = (/* req: Request, res: Response */) => {};
+export const deleteTour = async (req: Request, res: Response) => {
+  try {
+    await Tour.findByIdAndDelete(req.params.id);
+
+    res.status(StatusCode.NO_CONTENT).json({
+      status: 'success',
+      data: null,
+    });
+  } catch (e) {
+    res.status(StatusCode.BAD_REQUEST).json({
+      status: 'fail',
+      message: e,
+    });
+  }
+};
