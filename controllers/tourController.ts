@@ -53,7 +53,7 @@ export const createTour = async (req: Request, res: Response) => {
   } catch (e) {
     res.status(StatusCode.BAD_REQUEST).json({
       status: 'fail',
-      message: 'Invalid data sent!',
+      message: e,
     });
   }
 };
