@@ -2,7 +2,6 @@ import express from 'express';
 
 import {
   checkBody,
-  checkId,
   createTour,
   deleteTour,
   getAllTours,
@@ -12,7 +11,8 @@ import {
 
 const router = express.Router();
 
-router.param('id', checkId);
+// Param middleware
+// router.param('id', checkId);
 
 router.route('/').get(getAllTours).post(checkBody, createTour);
 router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
