@@ -1,21 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
+import Tour from '../models/tourModel';
 import { StatusCode } from '../src/types/enums';
-
-export const checkBody = (req: Request, res: Response, next: NextFunction) => {
-  const { body } = req;
-  const isValidBody = 'name' in body && 'price' in body;
-
-  if (!isValidBody) {
-    res.status(StatusCode.BAD_REQUEST).json({
-      status: 'fail',
-      message: 'The data is missing required name or price field',
-    });
-    return;
-  }
-
-  next();
-};
 
 export const getAllTours = (req: Request, res: Response) => {
   const r = req as Request & { requestTime: string };
@@ -42,7 +28,23 @@ export const getTour = (_req: Request, res: Response) => {
   });
 };
 
-export const createTour = (/* req: Request, res: Response */) => {};
+export const createTour = async (req: Request, res: Response) => {
+  try {
+    const newTour = await Tour.create(req.body);
+
+    res.status(StatusCode.CREATED).json({
+      status: 'success',
+      data: {
+        tour: newTour,
+      },
+    });
+  } catch (e) {
+    res.status(StatusCode.BAD_REQUEST).json({
+      status: 'fail',
+      message: 'Invalid data sent!',
+    });
+  }
+};
 
 export const updateTour = (/* req: Request, res: Response */) => {};
 
