@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
+import { FilterQuery } from 'mongoose';
 
-import Tour from '../models/tourModel';
+import Tour, { ITour } from '../models/tourModel';
 import { StatusCode } from '../src/types/enums';
 
 const excludedFields = ['page', 'sort', 'limit', 'field'];
@@ -10,7 +11,14 @@ export const getAllTours = async (req: Request, res: Response) => {
     const queryObj = { ...req.query };
     excludedFields.forEach((field) => delete queryObj[field]);
 
-    const query = Tour.find(queryObj);
+    const formattedQueryObj = JSON.parse(
+      JSON.stringify(queryObj).replace(
+        /\b(gte|gt|lte|lt)\b/g,
+        (match) => `$${match}`,
+      ),
+    ) as FilterQuery<ITour>;
+
+    const query = Tour.find(formattedQueryObj);
 
     // 👇 Another way to filter data using chaining
     // const tours = await Tour.find()

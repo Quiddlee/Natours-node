@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-interface ITour extends mongoose.Document {
+export interface ITour extends mongoose.Document {
   name: string;
   duration: number;
   maxGroupSize: number;
