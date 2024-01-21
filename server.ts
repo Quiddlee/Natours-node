@@ -1,8 +1,8 @@
+import 'dotenv/config';
+
 import mongoose from 'mongoose';
 
 import app from './app';
-
-import 'dotenv/config';
 
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
