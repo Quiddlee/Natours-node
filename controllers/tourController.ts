@@ -3,9 +3,23 @@ import { Request, Response } from 'express';
 import Tour from '../models/tourModel';
 import { StatusCode } from '../src/types/enums';
 
-export const getAllTours = async (_req: Request, res: Response) => {
+const excludedFields = ['page', 'sort', 'limit', 'field'];
+
+export const getAllTours = async (req: Request, res: Response) => {
   try {
-    const tours = await Tour.find();
+    const queryObj = { ...req.query };
+    excludedFields.forEach((field) => delete queryObj[field]);
+
+    const query = Tour.find(queryObj);
+
+    // 👇 Another way to filter data using chaining
+    // const tours = await Tour.find()
+    //   .where('duration')
+    //   .equals(5)
+    //   .where('difficulty')
+    //   .equals('easy');
+
+    const tours = await query;
 
     res.status(StatusCode.SUCCESS).json({
       status: 'success',
