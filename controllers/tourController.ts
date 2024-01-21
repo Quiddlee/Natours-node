@@ -18,7 +18,7 @@ export const getAllTours = async (req: Request, res: Response) => {
       ),
     ) as FilterQuery<ITour>;
 
-    const query = Tour.find(formattedQueryObj);
+    let query = Tour.find(formattedQueryObj);
 
     // 👇 Another way to filter data using chaining
     // const tours = await Tour.find()
@@ -26,6 +26,13 @@ export const getAllTours = async (req: Request, res: Response) => {
     //   .equals(5)
     //   .where('difficulty')
     //   .equals('easy');
+
+    if ('sort' in req.query && typeof req.query.sort === 'string') {
+      const sortBy = req.query.sort.split(',').join(' ');
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort('-createdAt');
+    }
 
     const tours = await query;
 
