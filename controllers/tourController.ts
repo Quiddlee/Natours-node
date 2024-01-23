@@ -4,7 +4,7 @@ import { FilterQuery } from 'mongoose';
 import Tour, { ITour } from '../models/tourModel';
 import { StatusCode } from '../src/types/enums';
 
-const excludedFields = ['page', 'sort', 'limit', 'field'];
+const excludedFields = ['page', 'sort', 'limit', 'fields'];
 
 export const getAllTours = async (req: Request, res: Response) => {
   try {
@@ -32,6 +32,13 @@ export const getAllTours = async (req: Request, res: Response) => {
       query = query.sort(sortBy);
     } else {
       query = query.sort('-createdAt');
+    }
+
+    if ('fields' in req.query && typeof req.query.fields === 'string') {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v');
     }
 
     const tours = await query;
