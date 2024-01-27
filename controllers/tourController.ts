@@ -1,10 +1,21 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { FilterQuery } from 'mongoose';
 
 import Tour, { ITour } from '../models/tourModel';
 import { StatusCode } from '../src/types/enums';
 
 const excludedFields = ['page', 'sort', 'limit', 'fields'];
+
+export const aliasTopTours = (
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+  next();
+};
 
 export const getAllTours = async (req: Request, res: Response) => {
   try {
