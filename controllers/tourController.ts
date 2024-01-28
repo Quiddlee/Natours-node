@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { FilterQuery } from 'mongoose';
 
-import Tour, { ITour } from '../models/tourModel';
+import Tour from '../models/tourModel';
 import { StatusCode } from '../src/types/enums';
-
-const excludedFields = ['page', 'sort', 'limit', 'fields'];
+import ApiFeatures from '../utils/apiFeatures';
 
 export const aliasTopTours = (
   req: Request,
@@ -19,52 +17,13 @@ export const aliasTopTours = (
 
 export const getAllTours = async (req: Request, res: Response) => {
   try {
-    const queryObj = { ...req.query };
-    excludedFields.forEach((field) => delete queryObj[field]);
+    const features = new ApiFeatures(Tour.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
 
-    const formattedQueryObj = JSON.parse(
-      JSON.stringify(queryObj).replace(
-        /\b(gte|gt|lte|lt)\b/g,
-        (match) => `$${match}`,
-      ),
-    ) as FilterQuery<ITour>;
-
-    let query = Tour.find(formattedQueryObj);
-
-    // 👇 Another way to filter data using chaining
-    // const tours = await Tour.find()
-    //   .where('duration')
-    //   .equals(5)
-    //   .where('difficulty')
-    //   .equals('easy');
-
-    if ('sort' in req.query && typeof req.query.sort === 'string') {
-      const sortBy = req.query.sort.split(',').join(' ');
-      query = query.sort(sortBy);
-    } else {
-      query = query.sort('-createdAt');
-    }
-
-    if ('fields' in req.query && typeof req.query.fields === 'string') {
-      const fields = req.query.fields.split(',').join(' ');
-      query = query.select(fields);
-    } else {
-      query = query.select('-__v');
-    }
-
-    const page = Number(req.query?.page || 1);
-    const limit = Number(req.query.limit) || 100;
-    const skip = (page - 1) * limit;
-
-    query = query.skip(skip).limit(limit);
-
-    if ('page' in req.query) {
-      const numTours = await Tour.countDocuments();
-
-      if (skip > numTours) throw new Error('This page does not exist');
-    }
-
-    const tours = await query;
+    const tours = await features.query;
 
     res.status(StatusCode.SUCCESS).json({
       status: 'success',
