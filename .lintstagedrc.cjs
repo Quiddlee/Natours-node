@@ -1,6 +1,6 @@
 module.exports = {
   './**/*.ts': [
-    'npm run lint:fix',
-    'npm run format:fix',
+    'pnpm lint:fix',
+    'pnpm format:fix',
   ],
 };
