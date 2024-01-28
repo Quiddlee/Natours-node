@@ -1,5 +1,5 @@
 module.exports = {
-  './**/*.ts': [
+  '**/*.ts': [
     'pnpm lint:fix',
     'pnpm format:fix',
   ],
