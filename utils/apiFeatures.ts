@@ -3,7 +3,7 @@ import { FilterQuery, Query } from 'mongoose';
 class ApiFeatures<TQuery> {
   private excludedFields = ['page', 'sort', 'limit', 'fields'];
 
-  private queryString: qs.ParsedQs;
+  private readonly queryString: qs.ParsedQs;
 
   query: Query<TQuery[], TQuery>;
 
